@@ -1,0 +1,60 @@
+import React, { useState } from "react";
+import { CreateTodo, Priority } from "@/types";
+import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
+import { Card } from "./ui/card";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  SelectGroup,
+  SelectLabel,
+} from "@/components/ui/select";
+import { Button } from "./ui/button";
+
+interface ToDoFormProps {
+  onSubmit: (todo: CreateTodo) => void;
+}
+
+export const TodoForm = ({ onSubmit }: ToDoFormProps) => {
+  const [error, setErrors] = useState<Partial<CreateTodo>>({});
+  const [formData, setFormData] = useState<CreateTodo>({
+    title: "",
+    description: "",
+    priority: "medium",
+  });
+
+  return (
+    <div>
+      <Card>
+        <p className="font-bold">Add new todo</p>
+        <form>
+          <Input
+            placeholder="Title"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, title: e.target.value }))
+            }
+          />
+          <Textarea placeholder="Description" value={formData.description} />
+          <Select>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Select a priority" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Priority</SelectLabel>
+                <SelectItem value="low">Low Priority</SelectItem>
+                <SelectItem value="medium">Medium Priority</SelectItem>
+                <SelectItem value="high">High Priority</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Button type="submit">Add To Do</Button>
+        </form>
+      </Card>
+    </div>
+  );
+};
