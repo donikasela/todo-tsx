@@ -25,21 +25,47 @@ export const TodoForm = ({ onSubmit }: ToDoFormProps) => {
     description: "",
     priority: "medium",
   });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); //stops browser from refreshing  page
 
+    if (!formData.title.trim()) {
+      setErrors({ title: "Title is required" });
+      return;
+    }
+    onSubmit(formData);
+
+    setFormData({ title: "", description: "", priority: "medium" });
+  };
   return (
     <div>
       <Card>
         <p className="font-bold">Add new todo</p>
-        <form>
+        <form onSubmit={handleSubmit}>
           <Input
             placeholder="Title"
             value={formData.title}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, title: e.target.value }))
-            }
+            onChange={(e) => {
+              setFormData((prev) => ({ ...prev, title: e.target.value }));
+              setErrors({}); // clears errors as soon as user types
+            }}
           />
-          <Textarea placeholder="Description" value={formData.description} />
-          <Select>
+
+          {error.title && <p className="text-red-600 text-sm">{error.title}</p>}
+          <Textarea
+            placeholder="Description"
+            value={formData.description}
+            onChange={(e) => {
+              setFormData((prev) => ({ ...prev, description: e.target.value }));
+            }}
+          />
+          <Select
+            onValueChange={(e) => {
+              setFormData((prev) => ({
+                ...prev,
+                priority: e as Priority,
+              }));
+            }}
+          >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="Select a priority" />
             </SelectTrigger>
