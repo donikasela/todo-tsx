@@ -38,7 +38,7 @@ export const TodoForm = ({ onSubmit }: ToDoFormProps) => {
   };
   return (
     <div>
-      <Card>
+      <Card className="p-6">
         <p className="font-bold">Add new todo</p>
         <form onSubmit={handleSubmit}>
           <Input
@@ -49,7 +49,6 @@ export const TodoForm = ({ onSubmit }: ToDoFormProps) => {
               setErrors({}); // clears errors as soon as user types
             }}
           />
-
           {error.title && <p className="text-red-600 text-sm">{error.title}</p>}
           <Textarea
             placeholder="Description"
