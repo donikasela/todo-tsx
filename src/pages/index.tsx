@@ -1,7 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { Button } from "@/components/ui/button";
 import { TodoForm } from "@/components/TodoForm";
-import { CreateTodo } from "@/types";
 import useTodos from "@/hooks/useTodos";
 import { TodoItem } from "@/components/TodoItem";
 const geistSans = Geist({

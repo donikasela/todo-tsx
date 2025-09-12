@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { Todo, Priority, UpdateTodo } from "@/types";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -12,7 +12,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Trash, PencilRuler } from "lucide-react";
+import {
+  Trash,
+  PencilRuler,
+  Save,
+  X,
+  CircleDashed,
+  CircleCheck,
+} from "lucide-react";
 
 interface TodoItemProps {
   todo: Todo;
@@ -74,10 +81,19 @@ export const TodoItem = ({
             <SelectItem value="high">High Priority</SelectItem>
           </SelectContent>
         </Select>
-        <div className="flex align-middle justify-end gap-3">
-          <Button onClick={saveTodo}>Save</Button>
-          <Button onClick={cancelTodo} variant="destructive">
-            X
+        <div className="flex items-center justify-end gap-2 pt-2">
+          <Button
+            onClick={cancelTodo}
+            variant="outline"
+            size="sm"
+            className="hover:bg-gray-50"
+          >
+            <X className="w-4 h-4 mr-1" />
+            Cancel
+          </Button>
+          <Button onClick={saveTodo} size="sm">
+            <Save className="w-4 h-4 mr-1" />
+            Save
           </Button>
         </div>
       </Card>
@@ -85,24 +101,48 @@ export const TodoItem = ({
   }
   return (
     <div className="mb-4">
-      <h3>{todo.title}</h3>
-      <p>{todo.description}</p>
-      <Badge variant="secondary" className="font-semibold text-sm">
-        Priority: {todo.priority}
-      </Badge>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => onToggleComplete(todo.id)}
-      >
-        {todo.completed ? "Completed" : "Pending"}
-      </Button>
-      <Button variant="destructive" size="sm" onClick={() => onDelete(todo.id)}>
-        <Trash />
-      </Button>
-      <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
-        <PencilRuler />
-      </Button>
+      <div className="flex flex-col gap-y-2">
+        <div className="flex gap-x-2">
+          <button
+            className="hover:-translate-y-0.5 transition-all duration-200"
+            onClick={() => onToggleComplete(todo.id)}
+          >
+            {todo.completed ? (
+              <CircleCheck className="text-green-700 h-6 w-6" />
+            ) : (
+              <CircleDashed className="text-slate-400 h-6 w-6" />
+            )}
+          </button>
+          {todo.completed ? (
+            <h3 className="text-lg font-semibold line-through text-slate-400">
+              {todo.title}
+            </h3>
+          ) : (
+            <h3 className="text-lg font-semibold">{todo.title}</h3>
+          )}
+        </div>
+        <p className="text-gray-600 ml-8">{todo.description}</p>
+      </div>
+      <div className="flex items-center gap-1">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsEditing(true)}
+          className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-900"
+          aria-label="Edit todo"
+        >
+          <PencilRuler className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onDelete(todo.id)}
+          className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-700"
+          aria-label="Delete todo"
+        >
+          <Trash className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 };
