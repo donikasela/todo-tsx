@@ -76,9 +76,9 @@ export const TodoItem = ({
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="low">Low Priority</SelectItem>
-            <SelectItem value="medium">Medium Priority</SelectItem>
-            <SelectItem value="high">High Priority</SelectItem>
+            <SelectItem value="low">🟢 Low Priority</SelectItem>
+            <SelectItem value="medium">🟡 Medium Priority</SelectItem>
+            <SelectItem value="high">🔴 High Priority</SelectItem>
           </SelectContent>
         </Select>
         <div className="flex items-center justify-end gap-2 pt-2">
@@ -101,29 +101,41 @@ export const TodoItem = ({
   }
   return (
     <div className="mb-4">
-      <div className="flex flex-col gap-y-2">
-        <div className="flex gap-x-2">
-          <button
-            className="hover:-translate-y-0.5 transition-all duration-200"
-            onClick={() => onToggleComplete(todo.id)}
-          >
-            {todo.completed ? (
-              <CircleCheck className="text-green-700 h-6 w-6" />
-            ) : (
-              <CircleDashed className="text-slate-400 h-6 w-6" />
-            )}
-          </button>
+      <div className="flex items-start gap-3 mb-3">
+        <button
+          className="mt-1 hover:scale-105 transition-transform duration-200 p-1"
+          onClick={() => onToggleComplete(todo.id)}
+        >
           {todo.completed ? (
-            <h3 className="text-lg font-semibold line-through text-slate-400">
-              {todo.title}
-            </h3>
+            <CircleCheck className="text-green-600 h-5 w-5" />
           ) : (
-            <h3 className="text-lg font-semibold">{todo.title}</h3>
+            <CircleDashed className="text-gray-400 h-5 w-5 hover:text-gray-600" />
+          )}
+        </button>
+        <div className="flex-1 min-w-0">
+          <h3
+            className={`text-lg font-semibold leading-tight ${
+              todo.completed ? "line-through text-gray-500" : "text-gray-900"
+            }`}
+          >
+            {todo.title}
+          </h3>
+          {todo.description && (
+            <p
+              className={`mt-1 text-sm leading-relaxed ${
+                todo.completed ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              {todo.description}
+            </p>
           )}
         </div>
-        <p className="text-gray-600 ml-8">{todo.description}</p>
       </div>
       <div className="flex items-center gap-1">
+        <Badge variant="outline" className="capitalize">
+          {todo.priority} Priority
+        </Badge>
+
         <Button
           variant="ghost"
           size="sm"
