@@ -1,23 +1,25 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import { TodoForm } from "@/components/TodoForm";
 import useTodos from "@/hooks/useTodos";
 import { TodoItem } from "@/components/TodoItem";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Footer } from "@/components/Footer";
+import { TodoStats } from "@/components/TodoStats";
 
 export default function Home() {
-  const { todos, addTodo, deleteTodo, editTodo, toggleComplete } = useTodos();
+  const {
+    todos,
+    addTodo,
+    deleteTodo,
+    editTodo,
+    toggleComplete,
+    totalCount,
+    completedCount,
+  } = useTodos();
   return (
-    <main className="p-8">
+    <main className="px-28 py-10">
       <TodoForm onSubmit={addTodo} />
-      <div className="mt-8">
+
+      <TodoStats completedCount={completedCount} totalCount={totalCount} />
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
@@ -28,6 +30,7 @@ export default function Home() {
           />
         ))}
       </div>
+      <Footer />
     </main>
   );
 }

@@ -38,12 +38,15 @@ export default function useTodos() {
       )
     );
   };
-
+  const totalCount = todos.length;
+  const completedCount = todos.filter((t) => t.completed).length;
   return {
     todos: sortTodoByPriority(todos), // Sort once per render, "derived state" (computed when needed)
     addTodo,
     deleteTodo,
     editTodo,
     toggleComplete,
+    totalCount,
+    completedCount,
   };
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Todo, Priority, UpdateTodo } from "@/types";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Card } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import {
@@ -40,6 +40,7 @@ export const TodoItem = ({
     todo.description || ""
   );
   const [editPriority, setEditPriority] = useState(todo.priority);
+
   const saveTodo = () => {
     onUpdate({
       id: todo.id,
@@ -57,45 +58,66 @@ export const TodoItem = ({
   };
   if (isEditing) {
     return (
-      <Card className="mb-4 p-4">
-        <Input
-          value={editTitle}
-          onChange={(e) => setEditTitle(e.target.value)}
-          placeholder="Title"
-        />
-        <Textarea
-          value={editDescription}
-          onChange={(e) => setEditDescription(e.target.value)}
-          placeholder="Description"
-        />
-        <Select
-          value={editPriority}
-          onValueChange={(value) => setEditPriority(value as Priority)}
-        >
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="low">🟢 Low Priority</SelectItem>
-            <SelectItem value="medium">🟡 Medium Priority</SelectItem>
-            <SelectItem value="high">🔴 High Priority</SelectItem>
-          </SelectContent>
-        </Select>
-        <div className="flex items-center justify-end gap-2 pt-2">
-          <Button
-            onClick={cancelTodo}
-            variant="outline"
-            size="sm"
-            className="hover:bg-gray-50"
-          >
-            <X className="w-4 h-4 mr-1" />
-            Cancel
-          </Button>
-          <Button onClick={saveTodo} size="sm">
-            <Save className="w-4 h-4 mr-1" />
-            Save
-          </Button>
-        </div>
+      <Card className="shadow-sm">
+        <CardContent className="p-4">
+          <div className="space-y-4">
+            <Input
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              placeholder="Enter todo title..."
+              className="font-medium"
+            />
+            <Textarea
+              value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
+              placeholder="Add a description..."
+              className="min-h-[80px] resize-none"
+            />
+            <Select
+              value={editPriority}
+              onValueChange={(value) => setEditPriority(value as Priority)}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    Low Priority
+                  </div>
+                </SelectItem>
+                <SelectItem value="medium">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    Medium Priority
+                  </div>
+                </SelectItem>
+                <SelectItem value="high">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    High Priority
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <Button
+                onClick={cancelTodo}
+                variant="outline"
+                size="sm"
+                className="hover:bg-gray-50"
+              >
+                <X className="w-4 h-4 mr-1" />
+                Cancel
+              </Button>
+              <Button onClick={saveTodo} size="sm">
+                <Save className="w-4 h-4 mr-1" />
+                Save
+              </Button>
+            </div>
+          </div>
+        </CardContent>
       </Card>
     );
   }
@@ -120,6 +142,13 @@ export const TodoItem = ({
           >
             {todo.title}
           </h3>
+          <p className="text-xs text-gray-400 mt-0.5">
+            {new Date(todo.createdAt).toLocaleDateString()} at{" "}
+            {new Date(todo.createdAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
           {todo.description && (
             <p
               className={`mt-1 text-sm leading-relaxed ${
@@ -135,7 +164,6 @@ export const TodoItem = ({
         <Badge variant="outline" className="capitalize">
           {todo.priority} Priority
         </Badge>
-
         <Button
           variant="ghost"
           size="sm"
